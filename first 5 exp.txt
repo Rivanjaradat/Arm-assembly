@@ -92,46 +92,10 @@ STOP
  B STOP
  END
 //////////////////////////////
-to do 3:
- PRESERVE8
-  THUMB 
-; Vector Table Mapped to Address 0 at Reset
-; Linker requires __Vectors to be exported
-  AREA RESET, DATA, READONLY
-  EXPORT __Vectors
-__Vectors 
-  DCD 0x20001000 ; stack pointer value when stack is empty
- DCD Reset_Handler ; reset vector
- 
-  ALIGN
-string1
- DCB "Hello world!",0 
-; The program
-; Linker requires Reset_Handler
- AREA MYCODE, CODE, READONLY
- ENTRY
- EXPORT Reset_Handler
-Reset_Handler
-;;;;;;;;;;User Code Start from the next line;;;;;;;;;;;;
- LDR R0, = string1 ; Load the address of string1 into the register R0 
- MOV R1, #0 ; Initialize the counter counting the length of string1
-loopCount
- LDRB R2, [R0] ; Load the character from the address R0 contains
- CMP R2, #0
- BEQ countDone
-; If it is zero...remember null terminated... 
-; You are done with the string. The length is in R1.
- ADD R0, #1 ; Otherwise, increment index to the next character
- ADD R1, #1 ; increment the counter for length
- B loopCount
-countDone
-STOP
- B STOP
- END
-	 
+
 ***********************************************
 exp 4:
-1:
+lab work 1:
  PRESERVE8
  THUMB 
 ; Vector Table Mapped to Address 0 at Reset
@@ -195,7 +159,7 @@ STOP
  END  
 	 END
 /////////////////////////
-2:
+lab work 2:
 ;The semicolon is uded to lead an inline documentation
 ;When you write your program, you could have your info at the top document lock
 ;For Example: Your Name, Student Number, what the program is for, and what it does 
@@ -275,60 +239,10 @@ STOP
  B STOP
  END 
 //////////////////////////////////////
-to do:
- PRESERVE8
- THUMB 
-; Vector Table Mapped to Address 0 at Reset
-; Linker requires __Vectors to be exported
- AREA RESET, DATA, READONLY
- EXPORT __Vectors
-__Vectors 
- DCD 0x20001000 ; stack pointer value when stack is empty
- DCD Reset_Handler ; reset vector
- 
- ALIGN
- 
-;Your Data section
-;AREA DATA
 
-N DCD 5
-NUM1 DCD 3, -7, 2, -2, 10
-C DCD 2
-POINTER DCD NUM1
-POINTER1 DCD NUM2
-
-
-	 AREA MYCODE1, DATA, READWRITE
-NUM2 DCD 0,0,0,0,0
-
-; The program
-; Linker requires Reset_Handler
- AREA MYCODE, CODE, READONLY
- ENTRY
- EXPORT Reset_Handler
-
-Reset_Handler
- LDR R1, N ; load size of array -
- LDR R2,C
-; a counter for how many elements are left to process
- LDR R3, POINTER ; load base pointer of array
- LDR R7,POINTER1
-
-loop
- 
-  LDR R4, [R3],#4
- 
- MUL R6,R4,R2
-  STR R6,[R7],#4
-  LDR R8,[R7]
-  SUB R1,#1
-  CMP R1,#0
-  BNE loop
-STOP 
- END
 ////////////////////////////////////
-lab work 5:
-1:
+exp 5:
+ lab work1:
  PRESERVE8
 		THUMB 
 
@@ -409,7 +323,7 @@ STOP
 	B STOP
 END
 /////////////////////////////////////
-2:
+lab work2:
 PRESERVE8
 	THUMB 
 
