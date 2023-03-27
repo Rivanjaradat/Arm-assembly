@@ -1,0 +1,472 @@
+//RIvan jaradat 
+lab work 1 to 5:
+exp 2:
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 
+ DCD Reset_Handler ; reset vector
+ 
+ ALIGN
+	 AREA MYCODE, CODE, READONLY
+ ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+  MOV R0,#70
+  SUB R1,R0,#32
+  MOV R2,#5
+  MUL R3,R1,R2
+  MOV R4,#9
+  
+  UDIV R5,R3,R4
+ END
+--------------------------------------------------------------
+exp 3:
+lab work :
+ PRESERVE8
+  THUMB 
+; Vector Table Mapped to Address 0 at Reset
+; Linker requires __Vectors to be exported
+  AREA RESET, DATA, READONLY
+  EXPORT __Vectors
+__Vectors 
+  DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+  ALIGN
+string1
+ DCB "ARM assembly language is important to learn!",0
+
+; The program
+; Linker requires Reset_Handler
+ AREA MYCODE, CODE, READONLY
+ ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+;;;;;;;;;;User Code Start from the next line;;;;;;;;;;;;
+ LDR R0, = string1 ; Load the address of string1 into the register R0 
+ MOV R1, #0 ; Initialize the counter counting vowel
+ MOV R2,#0; Initialize the counter counting  non vowel
+loop
+ LDRB R3, [R0] ; Load the character from the address R0 contains
+ CMP R3, #0
+ BEQ countDone
+ cmp R3," "
+ BEQ spac
+ CMP R3, #'a'
+ BEQ Vowel
+ CMP R3, #'e'
+ BEQ Vowel
+ CMP R3, #'i'
+ BEQ Vowel
+ CMP R3, #'o'
+ BEQ Vowel
+ CMP R3, #'u'
+ BEQ Vowel
+ CMP R3, #'A'
+ BEQ Vowel
+ CMP R3, #'E'
+ BEQ Vowel
+ CMP R3, #'I'
+ BEQ Vowel
+ CMP R3, #'O'
+ BEQ Vowel
+ CMP R3, #'U'
+ BEQ Vowel
+ BNE nonVowel
+Vowel
+ ADD R1, #1 ; Increment the vowel counter by 1
+ ADD R0, #1
+ B loop
+spac 
+ ADD R0,#1
+ B loop
+
+
+nonVowel
+ ADD R2, #1
+ ADD R0, #1
+ B loop
+countDone
+STOP
+ B STOP
+ END
+//////////////////////////////
+to do 3:
+ PRESERVE8
+  THUMB 
+; Vector Table Mapped to Address 0 at Reset
+; Linker requires __Vectors to be exported
+  AREA RESET, DATA, READONLY
+  EXPORT __Vectors
+__Vectors 
+  DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+  ALIGN
+string1
+ DCB "Hello world!",0 
+; The program
+; Linker requires Reset_Handler
+ AREA MYCODE, CODE, READONLY
+ ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+;;;;;;;;;;User Code Start from the next line;;;;;;;;;;;;
+ LDR R0, = string1 ; Load the address of string1 into the register R0 
+ MOV R1, #0 ; Initialize the counter counting the length of string1
+loopCount
+ LDRB R2, [R0] ; Load the character from the address R0 contains
+ CMP R2, #0
+ BEQ countDone
+; If it is zero...remember null terminated... 
+; You are done with the string. The length is in R1.
+ ADD R0, #1 ; Otherwise, increment index to the next character
+ ADD R1, #1 ; increment the counter for length
+ B loopCount
+countDone
+STOP
+ B STOP
+ END
+	 
+***********************************************
+exp 4:
+1:
+ PRESERVE8
+ THUMB 
+; Vector Table Mapped to Address 0 at Reset
+; Linker requires __Vectors to be exported
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+ ALIGN
+ 
+;Your Data section
+;AREA DATA
+   
+N DCD 7
+NUM1 DCD 3, -7, 10, -2, 10, 20, 304
+POINTER DCD NUM1
+SUMP1 DCD SUM
+	AREA MYRAM, DATA, READWRITE
+SUM DCD 0
+
+; The program
+; Linker requires Reset_Handler
+ AREA MYCODE, CODE, READONLY
+
+ ENTRY
+ EXPORT Reset_Handler
+Reset_Handler
+
+ LDR R1, N ; load size of array -
+; a counter for how many elements are left to process
+ 
+ LDR R2, POINTER ; load base pointer of array
+ MOV R0, #0 ; initialize accumulator
+LOOP 
+ LDR R3, [R2], #4 ; load value from array, 
+; increment array pointer to next word
+ cmp R3,#5
+ 
+ BGT COUNT
+ 
+ SUB R1,R1,#1
+ CMP R1,#0
+ BEQ ENDCOUNT
+ BNE LOOP
+COUNT
+ ADD R0,R0,R3
+ SUB R1,R1,#1
+ CMP R1,#0
+ BEQ ENDCOUNT
+ B LOOP 
+ 
+ENDCOUNT 
+ LDR R4, SUMP1 ; get memory address to store sum
+ STR R0, [R4] ; store answer
+  LDR R6, [R4] 
+ 
+STOP 
+ B STOP
+ END  
+	 END
+/////////////////////////
+2:
+;The semicolon is uded to lead an inline documentation
+;When you write your program, you could have your info at the top document lock
+;For Example: Your Name, Student Number, what the program is for, and what it does 
+
+;;; Directives
+ PRESERVE8
+ THUMB 
+; Vector Table Mapped to Address 0 at Reset
+; Linker requires __Vectors to be exported
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+ ALIGN
+ 
+;Your Data section
+;AREA DATA
+
+MaxP DCD Max
+
+MinP DCD Min
+N DCD 12
+NUM1 DCD 3, -7, 2, -2, 10, 20, 70, 200, 32, 8, 64, -20
+POINTER DCD NUM1
+; The program
+; Linker requires Reset_Handler
+ AREA MYRAM, DATA, READWRITE
+Min DCD 0
+Max DCD 0
+ AREA MYCODE, CODE, READONLY
+	 
+ ENTRY
+ EXPORT Reset_Handler
+
+Reset_Handler
+ LDR R1, N ; load size of array -
+; a counter for how many elements are left to process
+ LDR R2, POINTER ; load base pointer of array
+  
+ LDR R3, [R2], #4
+ SUB R1,R1,#1
+  MOV R5,R3
+  MOV R6,R3
+LOOP 
+ LDR R4, [R2], #4
+
+ CMP R4,R5
+ BGT LOOP1
+ CMP R4,R6
+ BLT LOOP2
+ SUB R1,R1,#1
+ CMP R1,#0
+ BEQ ENDCOUNT
+ BNE LOOP
+LOOP1
+ MOV  R5,R4
+ SUB R1,R1,#1
+ CMP R1,#0
+ BEQ ENDCOUNT
+ B LOOP 
+LOOP2
+ MOV  R6,R4
+ SUB R1,R1,#1
+ CMP R1,#0
+ BEQ ENDCOUNT
+ B LOOP 
+ENDCOUNT
+ LDR R7, MaxP ; get memory address to store sum
+ STR R5, [R7] ; store answer
+ LDR R9,[R5]
+ LDR R8, MinP
+ STR R6,[R8]
+
+STOP 
+ B STOP
+ END 
+//////////////////////////////////////
+to do:
+ PRESERVE8
+ THUMB 
+; Vector Table Mapped to Address 0 at Reset
+; Linker requires __Vectors to be exported
+ AREA RESET, DATA, READONLY
+ EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+ ALIGN
+ 
+;Your Data section
+;AREA DATA
+
+N DCD 5
+NUM1 DCD 3, -7, 2, -2, 10
+C DCD 2
+POINTER DCD NUM1
+POINTER1 DCD NUM2
+
+
+	 AREA MYCODE1, DATA, READWRITE
+NUM2 DCD 0,0,0,0,0
+
+; The program
+; Linker requires Reset_Handler
+ AREA MYCODE, CODE, READONLY
+ ENTRY
+ EXPORT Reset_Handler
+
+Reset_Handler
+ LDR R1, N ; load size of array -
+ LDR R2,C
+; a counter for how many elements are left to process
+ LDR R3, POINTER ; load base pointer of array
+ LDR R7,POINTER1
+
+loop
+ 
+  LDR R4, [R3],#4
+ 
+ MUL R6,R4,R2
+  STR R6,[R7],#4
+  LDR R8,[R7]
+  SUB R1,#1
+  CMP R1,#0
+  BNE loop
+STOP 
+ END
+////////////////////////////////////
+lab work 5:
+1:
+ PRESERVE8
+		THUMB 
+
+		AREA RESET, DATA, READONLY
+		EXPORT __Vectors
+__Vectors 
+	DCD 0x20001000 
+
+		DCD Reset_Handler 
+ 
+	ALIGN
+string
+		DCB "ARM assembly language is important to learn!",0
+
+
+	;this data can be read only 
+	AREA dd, DATA, READwrite
+	;needed this part so that sum can be writtable 
+
+	AREA MYCODE, CODE, READONLY
+
+
+	ENTRY
+	EXPORT Reset_Handler
+		
+addvowel proc
+	ADD R1,R1,#1
+	MOV R10,#1
+	BX LR
+Reset_Handler
+
+	LDR R0,=string
+	MOV R1,#0 ; VOWELS COUNTER
+	MOV R2,#0 ;NONVOWELS COUNTER
+
+loop
+	LDRB R3,[R0],#1
+	MOV R10,#0
+	CMP R3, #0;compare R3 with 0
+	BEQ done;Branch to label done if end of string
+	
+	CMP R3,0x20 ;20 is the hexadecimal of the space
+	BEQ loop ; if R3 equals space branch to loop
+	
+	CMP R3, #'a';compare R3 with a
+	; vowel letter(aeuioAEIUO)
+	BLEQ addvowel;Branch to label AddVowel
+	CMP R3, #'e'
+	BLEQ addvowel
+	CMP R3, #'u'
+	BLEQ addvowel
+	CMP R3, #'o'
+	BLEQ addvowel
+	CMP R3, #'i'
+	BLEQ addvowel
+	CMP R3, #'A'
+	BLEQ addvowel
+	CMP R3, #'E'
+	BLEQ addvowel
+	CMP R3, #'U'
+	BLEQ addvowel
+	CMP R3, #'O'
+	BLEQ addvowel
+	CMP R3, #'I'
+	BLEQ addvowel
+	CMP R10,#1 
+	BEQ loop
+	BNE AddNonVowel
+
+
+AddNonVowel
+	ADD R2,R2,#1
+	B loop
+done
+
+STOP 
+
+	B STOP
+END
+/////////////////////////////////////
+2:
+PRESERVE8
+	THUMB 
+
+	AREA RESET, DATA, READONLY
+	EXPORT __Vectors
+__Vectors 
+ DCD 0x20001000 ; stack pointer value when stack is empty
+ DCD Reset_Handler ; reset vector
+ 
+	ALIGN
+ 
+;Your Data section
+;AREA DATA
+SUMP DCD SUM
+SUMP2 DCD SUM2
+N DCD 5
+	AREA MYRAM, DATA, READWRITE
+SUM DCD 0
+SUM2 DCD 0
+;; The program Linker requires Reset_Handler
+	AREA MYCODE, CODE, READONLY
+	ENTRY
+	EXPORT Reset_Handler
+;;;;;Procedure definitions;;;;
+SUMUP PROC
+	push {R1}
+	SUBS R1, R1, #1 ;Decrement loop counter R1
+	BGT SUMUP ;Branch back if not done
+;MOV PC, LR
+	BX LR
+	
+;;;users main program;;;;;
+Reset_Handler 
+ 
+	MOV R2,#1
+	LDR R1, N ;Load count into R1
+	MOV R0, #0 ;Clear accumulator R0
+	BL SUMUP
+	LDR R3, SUMP ;Load address of SUM to R3
+loop
+	pop{R1}	
+	cmp r1,#0
+	beq STOP
+	MUL R2, R2,R1
+	
+	B loop
+	
+	STR R0, [R3] ;Store SUM
+
+	LDR R4, [R3]
+	MOV R7, #8
+	LDR R5, SUMP2 ;Load address of SUM2 to R5
+	STR R7, [R5] ;Store SUM2
+ 
+	LDR R6, [R5]
+ 
+STOP
+	B STOP
+	END 
+/////////////////////////////////////////
